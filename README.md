@@ -1,2 +1,2 @@
-# NodeJS_MongoDB
- Practice
+## NodeJS_MongoDB
+NodeJS Practice with MongoDb
