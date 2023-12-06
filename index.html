@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        li{
+            cursor: pointer;
+        }
+        li:hover{
+            background-color: aqua;
+        }
+    </style>
+</head>
+<body>
+    <h1>Node JS Deneme web sayfası</h1>
+    <input type="text">
+    <button onclick="save() ">save</button>
+    <ul id="ul">
+        
+    </ul>
+</body>
+<script>  
+    getAll();
+
+    //getall
+    async function getAll(){
+        const data = await fetch("http://localhost:7001/api/getAll")
+        .then(res => res.json());
+
+        const elUl = document.querySelector("#ul");
+        let text = "";
+
+        for (let index in data) {
+            text += `<li onclick="remove(event)" data-index="${index}">${data[index]}</li>`
+        }
+
+        elUl.innerHTML = text;
+    }
+
+    //save
+    const save = async () =>{
+        const inputEl = document.querySelector("input");
+        const inputData = {value: inputEl.value};
+        await fetch("http://localhost:7001/api/save", {
+            method: "POST",
+            body: JSON.stringify(inputData),
+            headers:{"Content-Type": "application/json"}
+        }).then(res=> res.json());
+
+        inputEl.value ="";
+        inputEl.focus();
+        getAll();
+    }
+
+    //remove
+    async function remove(event){
+        const index = event.target.dataset["index"];
+
+       await fetch(`http://localhost:7001/api/removeByIndex/${index}`)
+        .then(res => res.json());
+        
+        getAll();
+    }
+
+</script>
+</html>
