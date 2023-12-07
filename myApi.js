@@ -5,7 +5,6 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require('mongoose');
-
 const app = express();
 
 app.use(cors());
@@ -17,12 +16,10 @@ mongoose.connect(uri).then(res=> {
 }).catch(err=> {
     console.log(err);
 });
-
 const todoSchema = new mongoose.Schema({
     work: String,
     date: Date
 });
-
 const Todo = mongoose.model("Todo", todoSchema);
 
 //API metotlarımız => GET, POST, PUT, DELETE
@@ -30,12 +27,10 @@ const Todo = mongoose.model("Todo", todoSchema);
 app.get("/api", (req, res)=> {
     res.json({message: "API çalışıyor"});
 });
-
 app.get("/api/getAll", async (req,res)=> {
     const todos = await Todo.find().sort({date: -1});
     res.json(todos);
 });
-
 app.post("/api/removeById", async (req,res)=> {
     const {_id} = req.body;
 
@@ -43,7 +38,6 @@ app.post("/api/removeById", async (req,res)=> {
 
     res.json({});
 })
-
 app.post("/api/save", async (req,res)=> {
     const {value} = req.body;
    
@@ -51,7 +45,6 @@ app.post("/api/save", async (req,res)=> {
     await todo.save();
     res.json({});
 })
-
 app.post("/api/update", async (req,res)=> {
     const {_id, value} = req.body;
     
